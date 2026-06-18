@@ -13,7 +13,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Order } from './types';
 import KioskView from './components/KioskView';
 import KasirView from './components/KasirView';
-import AdminStatsView from './components/AdminStatsView';
 import PhoneSimulatorModal from './components/PhoneSimulatorModal';
 import { AnimatePresence } from 'motion/react';
 import { useOrders } from './hooks/useOrders';
@@ -168,11 +167,7 @@ function AppContent() {
             </ProtectedRoute>
           } />
 
-          <Route path="/admin" element={
-            <ProtectedRoute correctPin={adminPin}>
-              <AdminStatsView orders={orders} />
-            </ProtectedRoute>
-          } />
+          <Route path="/admin" element={<Navigate to="/kasir" replace />} />
         </Routes>
       </div>
 

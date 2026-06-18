@@ -12,6 +12,7 @@ import { initDb } from "./server/db/manager";
 import orderRoutes from "./server/routes/orders";
 import configRoutes from "./server/routes/config";
 import systemRoutes from "./server/routes/system";
+import uploadRoutes from "./server/routes/upload";
 
 const PORT = 3000;
 
@@ -25,6 +26,10 @@ async function startServer(): Promise<void> {
   app.use("/api", systemRoutes);
   app.use("/api", configRoutes);
   app.use("/api/orders", orderRoutes);
+  app.use("/api", uploadRoutes);
+
+  // --- Static Uploads ---
+  app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
   // --- Frontend Serving ---
   if (process.env.NODE_ENV !== "production") {

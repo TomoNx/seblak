@@ -28,8 +28,10 @@ export default function CustomizePanel({
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'karbo' | 'protein' | 'cuanki' | 'extra'>('all');
 
   const filteredToppings = useMemo(() => {
-    if (selectedCategory === 'all') return toppings;
-    return toppings.filter(t => t.category === selectedCategory);
+    // Hanya tampilkan topping yang aktif (isActive: true atau undefined = aktif)
+    const activeToppings = toppings.filter(t => t.isActive !== false);
+    if (selectedCategory === 'all') return activeToppings;
+    return activeToppings.filter(t => t.category === selectedCategory);
   }, [selectedCategory, toppings]);
 
   const handleSelectBroth = (broth: Broth) => {
@@ -271,18 +273,6 @@ export default function CustomizePanel({
           </div>
         </div>
 
-        <div className="space-y-2 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm">
-          <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase flex items-center gap-1.5">
-            Catatan Khusus untuk Koki (Opsional)
-          </h3>
-          <input
-            type="text"
-            placeholder="Contoh: telur ceplok setengah matang, kuah banyak, tanpa pakcoy..."
-            value={customItem.notes || ''}
-            onChange={(e) => setCustomItem(prev => ({ ...prev, notes: e.target.value }))}
-            className="w-full bg-slate-50 text-xs text-slate-800 pl-3 pr-3 py-2.5 rounded border border-slate-200 outline-none focus:border-amber-500 transition-colors"
-          />
-        </div>
 
       </div>
 
@@ -351,6 +341,19 @@ export default function CustomizePanel({
         </div>
 
         <div className="border-t border-slate-200 pt-4 space-y-3.5 bg-white shrink-0">
+          <div className="space-y-1.5">
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1">
+              📝 Catatan Khusus untuk Koki (Opsional)
+            </label>
+            <input
+              type="text"
+              placeholder="Cth: telur ceplok, kuah banyak, tanpa pakcoy..."
+              value={customItem.notes || ''}
+              onChange={(e) => setCustomItem(prev => ({ ...prev, notes: e.target.value }))}
+              className="w-full bg-slate-50 text-xs text-slate-800 pl-3 pr-3 py-2.5 rounded-lg border border-slate-200 outline-none focus:border-amber-500 transition-colors"
+            />
+          </div>
+
           <div className="flex justify-between items-center bg-slate-50 p-2.5 rounded-lg border border-slate-100">
             <span className="text-xs text-slate-500 font-semibold">Harga Rakitan</span>
             <span className="text-sm font-mono font-black text-amber-700">{formatRupiah(currentItemTotalPrice)}</span>

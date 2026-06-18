@@ -70,3 +70,34 @@ export async function resetDatabase(): Promise<void> {
   const res = await fetch(`${API_BASE}/reset`, { method: 'POST' });
   if (!res.ok) throw new Error(`Failed to reset database: ${res.status}`);
 }
+
+/** Upload an image file by converting it to Base64 and sending it via JSON */
+export async function uploadImage(file: File): Promise<{ url: string }> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64Data = reader.result as string;
+        const res = await fetch(`${API_BASE}/upload`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            data: base64Data
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Failed to upload image: ${res.status}`);
+        }
+
+        resolve(await res.json());
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.onerror = () => reject(new Error("Failed to read file."));
+    reader.readAsDataURL(file);
+  });
+}

@@ -3,8 +3,9 @@ import { Topping, Broth, PresetMenu } from '../../types';
 import { SnackOrDrink, formatRupiah } from '../../data';
 import { 
   Package, Layers, Flame, Coffee, Tags, Settings, 
-  Search, Plus, QrCode, Edit3, Trash2, X 
+  Search, Plus, QrCode, Edit3, Trash2, X, Loader2 
 } from 'lucide-react';
+import { uploadImage } from '../../services/api';
 
 interface MenuManagerProps {
   toppings: Topping[];
@@ -37,6 +38,7 @@ export default function MenuManager({
 
   const [editingGroupId, setEditingGroupId] = useState<'presets' | 'toppings' | 'broths' | 'snacks_drinks' | 'categories' | 'settings' | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const [menuForm, setMenuForm] = useState<any>({
     id: '', name: '', description: '', price: 0, basePrice: 0, stock: 10,
@@ -103,7 +105,8 @@ export default function MenuManager({
       });
     } else if (group === 'toppings') {
       setMenuForm({
-        id: item.id, name: item.name, category: item.category, price: item.price, stock: item.stock ?? 10, description: item.description || ''
+        id: item.id, name: item.name, category: item.category, price: item.price, stock: item.stock ?? 10, description: item.description || '',
+        isActive: item.isActive !== false
       });
     } else if (group === 'broths') {
       setMenuForm({
@@ -127,7 +130,8 @@ export default function MenuManager({
       });
     } else if (menuManageTab === 'toppings') {
       setMenuForm({
-        id: `TOP-${Math.floor(100 + Math.random() * 900)}`, name: '', category: 'karbo', price: 3000, stock: 50, description: ''
+        id: `TOP-${Math.floor(100 + Math.random() * 900)}`, name: '', category: 'karbo', price: 3000, stock: 50, description: '',
+        isActive: true
       });
     } else if (menuManageTab === 'broths') {
       setMenuForm({
@@ -162,7 +166,8 @@ export default function MenuManager({
       let list = [...toppings];
       const payload: Topping = {
         id: menuForm.id, name: menuForm.name, category: menuForm.category, price: Number(menuForm.price),
-        stock: Number(menuForm.stock), description: menuForm.description
+        stock: Number(menuForm.stock), description: menuForm.description,
+        isActive: menuForm.isActive !== false
       };
       if (isNew) { list.push(payload); } else { list = list.map(item => item.id === editingItemId ? payload : item); }
       onSaveToppings?.(list);
@@ -253,12 +258,36 @@ export default function MenuManager({
     setEditingItemId(null);
   };
 
-  const handleQRISUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => setSettingsForm(prev => ({ ...prev, qrisImage: reader.result as string }));
-    reader.readAsDataURL(file);
+
+    setIsUploading(true);
+    try {
+      const res = await uploadImage(file);
+      setMenuForm((prev: any) => ({ ...prev, image: res.url }));
+    } catch (err: any) {
+      console.error("Failed to upload image:", err);
+      alert(`⚠️ Gagal mengunggah gambar: ${err.message || err}`);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleQRISUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const res = await uploadImage(file);
+      setSettingsForm(prev => ({ ...prev, qrisImage: res.url }));
+    } catch (err: any) {
+      console.error("Failed to upload QRIS image:", err);
+      alert(`⚠️ Gagal mengunggah QRIS: ${err.message || err}`);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   useEffect(() => {
@@ -393,8 +422,11 @@ export default function MenuManager({
                 return (
                   <div key={item.id} onClick={() => startEditMenu(menuManageTab, item)} className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-start gap-3 ${isBeingEdited ? 'bg-amber-500/15 border-amber-500 shadow-md ring-1 ring-amber-400' : 'bg-white border-slate-200 hover:border-slate-350 hover:shadow-sm'}`}>
                     <div className="space-y-1.5 flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="text-[9px] font-mono font-bold px-1 py-0.2 bg-slate-100 rounded text-slate-500 uppercase">{item.id}</span>
+                        {menuManageTab === 'toppings' && item.isActive === false && (
+                          <span className="text-[8px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">Non-Aktif</span>
+                        )}
                       </div>
                       <h4 className="font-extrabold text-sm uppercase text-slate-900 leading-snug truncate">{item.name}</h4>
                       <p className="text-[10px] text-slate-400 font-semibold line-clamp-1 leading-normal">{item.description || '-'}</p>
@@ -459,6 +491,28 @@ export default function MenuManager({
                       <input type="number" className="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-bold font-mono outline-none focus:border-amber-500" value={menuForm.stock} onChange={(e) => setMenuForm({ ...menuForm, stock: e.target.value })} />
                     </div>
                   </div>
+                  {/* Toggle Aktif/Non-Aktif */}
+                  <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5">
+                    <div>
+                      <p className="text-[10px] font-black text-slate-700 uppercase tracking-wider">Status Topping</p>
+                      <p className="text-[9px] text-slate-400 font-medium mt-0.5">
+                        {menuForm.isActive !== false ? 'Topping tampil di kiosk' : 'Topping disembunyikan dari kiosk'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setMenuForm({ ...menuForm, isActive: menuForm.isActive === false ? true : false })}
+                      className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors shrink-0 ${
+                        menuForm.isActive !== false ? 'bg-emerald-500' : 'bg-slate-300'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                          menuForm.isActive !== false ? 'translate-x-5' : 'translate-x-0.5'
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </>
               )}
 
@@ -482,8 +536,27 @@ export default function MenuManager({
                     <input type="number" className="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-bold font-mono outline-none focus:border-amber-500" value={menuForm.price} onChange={(e) => setMenuForm({ ...menuForm, price: e.target.value })} />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Foto Link URL</label>
-                    <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-mono outline-none focus:border-amber-500" value={menuForm.image} onChange={(e) => setMenuForm({ ...menuForm, image: e.target.value })} />
+                    <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">Foto Menu</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="Link URL gambar..."
+                        className="flex-1 bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-mono outline-none focus:border-amber-500 font-medium text-slate-800" 
+                        value={menuForm.image} 
+                        onChange={(e) => setMenuForm({ ...menuForm, image: e.target.value })} 
+                      />
+                      <label className="cursor-pointer bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] px-3.5 py-2 rounded flex items-center justify-center shrink-0 shadow-sm gap-1 min-w-[75px] select-none">
+                        {isUploading ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : "Unggah"}
+                        <input type="file" accept="image/*" disabled={isUploading} className="hidden" onChange={handleImageUpload} />
+                      </label>
+                    </div>
+                    {menuForm.image && (
+                      <div className="mt-2 w-24 h-24 border border-slate-200 rounded-lg overflow-hidden bg-slate-50 p-1 flex items-center justify-center">
+                        <img src={menuForm.image} alt="Preview Menu" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -509,8 +582,27 @@ export default function MenuManager({
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Foto Link URL</label>
-                    <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-mono outline-none focus:border-amber-500" value={menuForm.image} onChange={(e) => setMenuForm({ ...menuForm, image: e.target.value })} />
+                    <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">Foto Menu</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="Link URL gambar..."
+                        className="flex-1 bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs font-mono outline-none focus:border-amber-500 font-medium text-slate-800" 
+                        value={menuForm.image} 
+                        onChange={(e) => setMenuForm({ ...menuForm, image: e.target.value })} 
+                      />
+                      <label className="cursor-pointer bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] px-3.5 py-2 rounded flex items-center justify-center shrink-0 shadow-sm gap-1 min-w-[75px] select-none">
+                        {isUploading ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : "Unggah"}
+                        <input type="file" accept="image/*" disabled={isUploading} className="hidden" onChange={handleImageUpload} />
+                      </label>
+                    </div>
+                    {menuForm.image && (
+                      <div className="mt-2 w-24 h-24 border border-slate-200 rounded-lg overflow-hidden bg-slate-50 p-1 flex items-center justify-center">
+                        <img src={menuForm.image} alt="Preview Menu" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                    )}
                   </div>
                   <div className="space-y-1.5 border-t border-slate-100 pt-2">
                     <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">Topping Bawaan</span>
@@ -575,9 +667,11 @@ export default function MenuManager({
                     <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">Gambar QRIS Toko</label>
                     <div className="flex gap-2">
                       <input type="text" className="flex-1 bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-[10px] font-mono outline-none focus:border-amber-500" value={settingsForm.qrisImage} onChange={(e) => setSettingsForm({ ...settingsForm, qrisImage: e.target.value })} />
-                      <label className="cursor-pointer bg-slate-800 text-white font-bold text-[10px] px-3.5 py-2 rounded flex items-center justify-center shrink-0 hover:bg-slate-900 shadow-sm">
-                        Unggah
-                        <input type="file" accept="image/*" className="hidden" onChange={handleQRISUpload} />
+                      <label className="cursor-pointer bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] px-3.5 py-2 rounded flex items-center justify-center shrink-0 hover:bg-slate-900 shadow-sm gap-1 min-w-[75px] select-none">
+                        {isUploading ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : "Unggah"}
+                        <input type="file" accept="image/*" disabled={isUploading} className="hidden" onChange={handleQRISUpload} />
                       </label>
                     </div>
                     {settingsForm.qrisImage && (

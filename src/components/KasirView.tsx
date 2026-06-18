@@ -8,6 +8,7 @@ import { AnimatePresence } from 'motion/react';
 import OrderQueueList from './kasir/OrderQueueList';
 import OrderDetailPanel from './kasir/OrderDetailPanel';
 import MenuManager from './kasir/MenuManager';
+import AdminStatsView from './AdminStatsView';
 import EditOrderModal from './kasir/EditOrderModal';
 import EditOrderItemsModal from './kasir/EditOrderItemsModal';
 
@@ -60,7 +61,7 @@ export default function KasirView({
   onSaveSettings
 }: KasirViewProps) {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<'pending' | 'paid' | 'cancelled' | 'all' | 'menu_management'>('pending');
+  const [statusFilter, setStatusFilter] = useState<'pending' | 'paid' | 'cancelled' | 'all' | 'menu_management' | 'analytics'>('pending');
 
   const [isEditingToppings, setIsEditingToppings] = useState<boolean>(false);
   const [editOrderObj, setEditOrderObj] = useState<Order | null>(null);
@@ -151,11 +152,22 @@ export default function KasirView({
           >
             <span>⚙️ Kelola Menu</span>
           </button>
+
+          <button
+            onClick={() => { setStatusFilter('analytics'); setSelectedOrderId(null); }}
+            className={`px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors whitespace-nowrap ${
+              statusFilter === 'analytics' ? 'bg-amber-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <span>📊 Analitik</span>
+          </button>
         </div>
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
-        {statusFilter === 'menu_management' ? (
+        {statusFilter === 'analytics' ? (
+          <AdminStatsView orders={orders} />
+        ) : statusFilter === 'menu_management' ? (
           <MenuManager
             toppings={toppings} onSaveToppings={onSaveToppings}
             broths={broths} onSaveBroths={onSaveBroths}

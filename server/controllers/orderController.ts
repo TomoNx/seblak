@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import * as orderModel from "../models/orderModel";
 import * as configModel from "../models/configModel";
 import { calculateItemUnitPrice, getToppingDisplayPrice } from "../utils/priceCalculator";
+import { OrderCreateSchema, OrderUpdateSchema, OrderItemInput } from "../validations/orderSchema";
 
-async function processOrderItems(rawItems: any[]): Promise<{ items: any[], totalPrice: number }> {
+async function processOrderItems(rawItems: OrderItemInput[]): Promise<{ items: any[], totalPrice: number }> {
   const toppings = await configModel.getConfig('toppings') || [];
   const broths = await configModel.getConfig('broths') || [];
   const presets = await configModel.getConfig('presets') || [];
@@ -11,7 +12,7 @@ async function processOrderItems(rawItems: any[]): Promise<{ items: any[], total
 
   let totalPrice = 0;
 
-  const processedItems = rawItems.map((item: any) => {
+  const processedItems = rawItems.map((item) => {
     if (item.type === 'snack' || item.type === 'drink') {
       const match = snacksAndDrinks.find((sd: any) => sd.name === item.name);
       const pricePerUnit = match ? match.price : (item.pricePerUnit || 0);
@@ -28,8 +29,9 @@ async function processOrderItems(rawItems: any[]): Promise<{ items: any[], total
       };
     }
 
+    const itemType = item.type; // Narrowed to 'custom' | 'preset'
     const preset = presets.find((p: any) => p.name === item.name);
-    const basePrice = item.type === 'custom' ? 6000 : (preset ? preset.basePrice : 0);
+    const basePrice = itemType === 'custom' ? 6000 : (preset ? preset.basePrice : 0);
 
     const clientBroth = item.brothName || (item.broth ? (item.broth.name || item.broth.id) : null);
     const brothObj = broths.find((b: any) => 
@@ -37,17 +39,17 @@ async function processOrderItems(rawItems: any[]): Promise<{ items: any[], total
     ) || broths.find((b: any) => b.id === (preset ? preset.defaultBroth : 'b_cikur_ori')) || broths[0];
     const brothName = brothObj ? brothObj.name : '';
 
-    const toppingsEntries = (item.toppings || []).map((t: any) => {
+    const toppingsEntries = (item.toppings || []).map((t) => {
       const tid = t.topping ? t.topping.id : t.id;
       const topDef = toppings.find((td: any) => 
         (tid && td.id === tid) || 
         (t.name && td.name === t.name)
       );
       return topDef ? { topping: topDef, quantity: t.quantity } : null;
-    }).filter(Boolean) as any[];
+    }).filter(Boolean) as { topping: any; quantity: number }[];
 
     const unitPrice = calculateItemUnitPrice(
-      item.type,
+      itemType,
       basePrice,
       brothObj,
       toppingsEntries,
@@ -58,7 +60,7 @@ async function processOrderItems(rawItems: any[]): Promise<{ items: any[], total
       const displayPrice = getToppingDisplayPrice(
         t.topping.id,
         t.topping.price,
-        item.type,
+        itemType,
         preset
       );
       return { name: t.topping.name, quantity: t.quantity, price: displayPrice };
@@ -92,10 +94,11 @@ export async function getAll(_req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
   try {
-    const order = req.body;
-    if (!order.customerName || !order.items) {
-      return res.status(400).json({ error: "Missing customerName or items." });
+    const validation = OrderCreateSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ error: validation.error.format() });
     }
+    const order = validation.data;
 
     const { items: processedItems, totalPrice } = await processOrderItems(order.items);
     const orderId = order.id || `SEB-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -129,7 +132,11 @@ export async function create(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const order = req.body;
+    const validation = OrderUpdateSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ error: validation.error.format() });
+    }
+    const order = validation.data;
 
     const existing = await orderModel.getOrderById(id);
     if (!existing) {

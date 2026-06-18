@@ -1,7 +1,7 @@
 import React from 'react';
 import { CartItem, PresetMenu } from '../../types';
 import { formatRupiah } from '../../data';
-import { ShoppingBasket, Trash2, User, AlertTriangle, ChevronRight } from 'lucide-react';
+import { ShoppingBasket, Trash2, User, AlertTriangle, ChevronRight, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { calculateItemUnitPrice } from '../../utils/priceCalculator';
 
@@ -15,6 +15,7 @@ interface CartSidebarProps {
   cartTotalPrice: number;
   handleRemoveFromCart: (id: string) => void;
   handleCheckout: () => void;
+  onEditItem?: (cartId: string) => void;
 }
 
 export default function CartSidebar({
@@ -26,7 +27,8 @@ export default function CartSidebar({
   setNameError,
   cartTotalPrice,
   handleRemoveFromCart,
-  handleCheckout
+  handleCheckout,
+  onEditItem
 }: CartSidebarProps) {
   return (
     <div className="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 text-slate-800 p-4 shadow-2xl relative z-10">
@@ -54,13 +56,24 @@ export default function CartSidebar({
                 className="bg-slate-50 p-3 rounded-lg border border-slate-200/80 hover:border-slate-300 transition-colors"
               >
                 <div className="flex justify-between items-start gap-2">
-                  <h4 className="font-bold text-xs uppercase text-slate-800 leading-snug">{item.name}</h4>
-                  <button
-                    onClick={() => handleRemoveFromCart(item.id)}
-                    className="text-slate-400 hover:text-red-500 p-1 transition-colors"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                  <h4 className="font-bold text-xs uppercase text-slate-800 leading-snug flex-1">{item.name}</h4>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {(item.type === 'custom' || item.type === 'preset') && onEditItem && (
+                      <button
+                        onClick={() => onEditItem(item.id)}
+                        className="text-amber-500 hover:text-amber-700 p-1 transition-colors"
+                        title="Edit item ini"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleRemoveFromCart(item.id)}
+                      className="text-slate-400 hover:text-red-500 p-1 transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
                 
                 {(item.type === 'snack' || item.type === 'drink') ? (

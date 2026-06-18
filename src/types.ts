@@ -6,6 +6,7 @@ export interface Topping {
   stock: number;
   icon?: string;
   description?: string;
+  isActive?: boolean; // undefined / true = aktif, false = non-aktif
 }
 
 export interface Broth {

@@ -49,6 +49,9 @@ export default function KioskView({
 
   const [kioskCategory, setKioskCategory] = useState<'seblak' | 'snacks' | 'drinks'>('seblak');
 
+  // ID keranjang yang sedang diedit (null = mode tambah baru)
+  const [editingCartId, setEditingCartId] = useState<string | null>(null);
+
   const startCustomSeblak = () => {
     setIsCustomMode(true);
     setCustomItem({
@@ -111,7 +114,7 @@ export default function KioskView({
     }
 
     const itemToSubmit: CartItem = {
-      id: customItem.id || Math.random().toString(36).substring(2, 9),
+      id: editingCartId || customItem.id || Math.random().toString(36).substring(2, 9),
       name: customItem.name || 'Seblak Custom',
       type: customItem.type as 'custom' | 'preset',
       basePrice: customItem.basePrice || 6000,
@@ -122,12 +125,37 @@ export default function KioskView({
       notes: customItem.notes || ''
     };
 
-    setCart(prev => [...prev, itemToSubmit]);
+    if (editingCartId) {
+      // Ganti item yang sedang diedit
+      setCart(prev => prev.map(i => i.id === editingCartId ? itemToSubmit : i));
+      setEditingCartId(null);
+    } else {
+      setCart(prev => [...prev, itemToSubmit]);
+    }
     setStep('menu');
   };
 
   const handleRemoveFromCart = (cartId: string) => {
     setCart(prev => prev.filter(item => item.id !== cartId));
+  };
+
+  const handleEditCartItem = (cartId: string) => {
+    const item = cart.find(i => i.id === cartId);
+    if (!item) return;
+    setEditingCartId(cartId);
+    setCustomItem({
+      id: item.id,
+      name: item.name,
+      type: item.type,
+      basePrice: item.basePrice,
+      broth: item.broth,
+      level: item.level,
+      toppings: item.toppings,
+      quantity: item.quantity,
+      notes: item.notes
+    });
+    setIsCustomMode(item.type === 'custom');
+    setStep('customize');
   };
 
   const handleAddSnackOrDrink = (item: { name: string; price: number; category: 'snack' | 'drink' }) => {
@@ -220,21 +248,6 @@ export default function KioskView({
 
   return (
     <div className="flex flex-col h-full bg-slate-50 overflow-hidden relative">
-      <div className="bg-gradient-to-r from-red-700 via-orange-600 to-amber-600 px-6 py-4 text-white shadow-md flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="bg-white/10 p-2.5 rounded-xl border border-white/20 select-none">
-            <Flame className="w-7 h-7 text-yellow-300 animate-pulse fill-yellow-400" />
-          </div>
-          <div>
-            <h1 className="text-xl font-extrabold tracking-tight">SEBLAK JEBRED</h1>
-            <p className="text-xs text-orange-100 font-medium">Self-Service Ordering Kiosk • Pedasnya Poll Seuhahnya Mantap!</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 text-xs bg-black/20 px-3 py-1.5 rounded-full border border-white/10">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-mono text-[11px] font-semibold text-white">KIOSK-01 ACTIVE</span>
-        </div>
-      </div>
 
       <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
         {step === 'menu' && (
@@ -250,6 +263,7 @@ export default function KioskView({
               cart={cart} presets={presets} customerName={customerName} setCustomerName={setCustomerName}
               nameError={nameError} setNameError={setNameError} cartTotalPrice={cartTotalPrice}
               handleRemoveFromCart={handleRemoveFromCart} handleCheckout={handleCheckout}
+              onEditItem={handleEditCartItem}
             />
           </>
         )}
