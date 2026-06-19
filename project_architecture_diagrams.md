@@ -41,18 +41,19 @@ graph TD
     DBManager --> MySQL
 ```
 
+![MVC System Component Diagram](assets/mvc_system_component_diagram.png)
+
 ---
 
 ## 2. Use Case Diagram
 
-The use cases model the interactions between Kiosk Customers, Cashier Staff, Admin Managers, and the SeblakPOS system.
+The use cases model the interactions between Kiosk Customers, Cashier Staff, and the SeblakPOS system.
 
 ```mermaid
 graph LR
     %% Actors
     CustomerNode["Customer (Self-Service)"]
     CashierNode["Cashier Staff"]
-    AdminNode["Admin Manager"]
 
     subgraph "SeblakPOS Application Boundary"
         %% Customer Use Cases
@@ -68,7 +69,7 @@ graph LR
         UC_ConfirmPayment["Process Cash/QRIS Payment"]
         UC_PrintReceipt["Print Thermal Struk (Browser Printing)"]
 
-        %% Admin Use Cases
+        %% Admin/Management Use Cases (Handled by Cashier)
         UC_Analytics["View Financial & Menu Analytics"]
         UC_ManageMenu["Manage Menu Configurations (Stock, Prices, Toppings)"]
     end
@@ -85,11 +86,11 @@ graph LR
     CashierNode --> UC_EditOrder
     CashierNode --> UC_ConfirmPayment
     CashierNode --> UC_PrintReceipt
-
-    %% Relations Admin
-    AdminNode --> UC_Analytics
-    AdminNode --> UC_ManageMenu
+    CashierNode --> UC_Analytics
+    CashierNode --> UC_ManageMenu
 ```
+
+![Use Case Diagram](assets/use_case_diagram.png)
 
 ---
 
@@ -204,6 +205,8 @@ erDiagram
     order_items ||--o{ order_item_toppings : "has customized"
 ```
 
+![Entity Relationship Diagram](assets/entity_relationship_diagram.png)
+
 ---
 
 ## 4. Sequence Diagram: Kiosk Order Creation Flow
@@ -250,6 +253,8 @@ sequenceDiagram
     K->>K: Set step to 'checkout_success'
     K-->>Customer: Display Success Panel & print-ready Receipt
 ```
+
+![Kiosk Order Creation Flow Diagram Image](assets/kiosk_order_creation_flow.png)
 
 ---
 
@@ -303,3 +308,5 @@ sequenceDiagram
     O->>O: Call window.print()
     O-->>Cashier: Open browser print dialog (showing only the styled receipt)
 ```
+
+![Cashier Order Edit & Print Flow Diagram Image](assets/cashier_order_edit_print_flow.png)
