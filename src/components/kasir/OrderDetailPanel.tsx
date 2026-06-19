@@ -225,18 +225,10 @@ export default function OrderDetailPanel({
             <div className="flex gap-2">
               <button
                 onClick={() => onCancelOrder(order.id)}
-                className="border-2 border-red-100 hover:border-red-200 hover:bg-red-50 text-red-600 p-2.5 rounded-xl transition-all cursor-pointer"
-                title="Batalkan Pesanan"
+                className="w-full border-2 border-red-100 hover:border-red-200 hover:bg-red-50 text-red-600 font-extrabold py-3 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <Trash2 className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handlePayConfirm}
-                disabled={paymentMethod === 'Tunai' && (!cashReceived || parseFloat(cashReceived) < order.totalPrice)}
-                className="flex-1 border-2 border-amber-500 hover:bg-amber-50 text-amber-700 font-extrabold py-3 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                Hanya Bayar
+                <Trash2 className="w-4 h-4" />
+                Batalkan Pesanan
               </button>
             </div>
 
@@ -251,7 +243,7 @@ export default function OrderDetailPanel({
           </div>
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto space-y-4">
+        <div className="shrink-0 space-y-4">
           {order.status === 'cancelled' ? (
             <div className="bg-rose-50 text-rose-800 border border-rose-100 rounded-xl p-3 text-xs text-center flex flex-col gap-2">
               <p className="font-bold">Pesanan Ini Telah Dibatalkan</p>
