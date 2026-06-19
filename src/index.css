@@ -24,3 +24,70 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.4);
 }
+
+@media print {
+  /* Reset the ancestors of the print receipt to block layout so they don't apply flex centering */
+  html, body, #root, #root *:has(.print-receipt-only) {
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* Hide any sibling elements that do not contain the printable receipt */
+  body > :not(:has(.print-receipt-only)),
+  #root > :not(:has(.print-receipt-only)),
+  #root * :not(:has(.print-receipt-only)):not(.print-receipt-only):not(.print-receipt-only *) {
+    display: none !important;
+  }
+
+  /* Style the receipt container for printing at the very top */
+  .print-receipt-only {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    margin: 0 auto !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    background: white !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Revert display/position inside the receipt so internal layout (flex, columns) works perfectly */
+  .print-receipt-only div,
+  .print-receipt-only span,
+  .print-receipt-only p,
+  .print-receipt-only img {
+    display: revert !important;
+    position: revert !important;
+  }
+
+  /* Explicitly restore Tailwind flex and positioning utilities used inside the receipt */
+  .print-receipt-only .relative {
+    position: relative !important;
+  }
+  .print-receipt-only .absolute {
+    position: absolute !important;
+  }
+  .print-receipt-only .flex {
+    display: flex !important;
+  }
+
+  /* Hide elements marked as no-print */
+  .no-print,
+  .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+  }
+}

@@ -31,7 +31,8 @@ export const SEEDED_ORDERS = [
     status: 'completed',
     createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
     paidAt: new Date(Date.now() - 4.5 * 60 * 1000).toISOString(),
-    completedAt: new Date(Date.now() - 1 * 60 * 1000).toISOString()
+    completedAt: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+    orderType: 'dine_in'
   },
   {
     id: 'SEB-1390',
@@ -60,7 +61,8 @@ export const SEEDED_ORDERS = [
     paymentMethod: 'QRIS',
     status: 'paid',
     createdAt: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
-    paidAt: new Date(Date.now() - 10 * 60 * 1000).toISOString()
+    paidAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+    orderType: 'take_away'
   },
   {
     id: 'SEB-8231',
@@ -90,6 +92,7 @@ export const SEEDED_ORDERS = [
     status: 'completed',
     createdAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
     paidAt: new Date(Date.now() - 38 * 60 * 1000).toISOString(),
-    completedAt: new Date(Date.now() - 25 * 60 * 1000).toISOString()
+    completedAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+    orderType: 'dine_in'
   }
 ];

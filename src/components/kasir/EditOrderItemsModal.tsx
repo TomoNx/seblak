@@ -129,7 +129,7 @@ export default function EditOrderItemsModal({
           <div>
             <p className="text-[10px] text-amber-250 font-bold uppercase tracking-wider font-mono">Panel Kasir Utama</p>
             <h3 className="text-sm font-black uppercase tracking-wide">
-              Kelola & Tambah Pesanan: Antrean #{order.queueNumber}
+              Kelola & Tambah Pesanan: {order.customerName}
             </h3>
           </div>
           <button

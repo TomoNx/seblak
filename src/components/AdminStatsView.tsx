@@ -8,6 +8,7 @@ import {
 
 interface AdminStatsViewProps {
   orders: Order[];
+  settings?: { shopName: string };
 }
 
 type QuickFilter = 'today' | 'week' | 'month' | '6months' | 'year' | 'custom' | 'all';
@@ -41,7 +42,7 @@ function getDateRange(preset: QuickFilter): { from: string; to: string } {
   return { from: '', to: '' };
 }
 
-export default function AdminStatsView({ orders }: AdminStatsViewProps) {
+export default function AdminStatsView({ orders, settings }: AdminStatsViewProps) {
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('today');
   const [filterDateFrom, setFilterDateFrom] = useState<string>('');
   const [filterDateTo, setFilterDateTo] = useState<string>('');
@@ -136,7 +137,7 @@ export default function AdminStatsView({ orders }: AdminStatsViewProps) {
           <BarChart2 className="w-5 h-5 text-amber-600" />
           Dashboard Analitik
         </h1>
-        <p className="text-xs text-slate-400 mt-0.5">Ringkasan operasional • Seblak Jebred</p>
+        <p className="text-xs text-slate-400 mt-0.5">Ringkasan operasional • {settings?.shopName || 'Seblak Jebred'}</p>
       </div>
 
       {/* === FILTER PANEL === */}

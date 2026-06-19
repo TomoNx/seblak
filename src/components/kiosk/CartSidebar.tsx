@@ -1,7 +1,7 @@
 import React from 'react';
 import { CartItem, PresetMenu } from '../../types';
 import { formatRupiah } from '../../data';
-import { ShoppingBasket, Trash2, User, AlertTriangle, ChevronRight, Pencil } from 'lucide-react';
+import { ShoppingBasket, Trash2, User, AlertTriangle, ChevronRight, Pencil, Utensils, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { calculateItemUnitPrice } from '../../utils/priceCalculator';
 
@@ -16,6 +16,8 @@ interface CartSidebarProps {
   handleRemoveFromCart: (id: string) => void;
   handleCheckout: () => void;
   onEditItem?: (cartId: string) => void;
+  orderType: 'dine_in' | 'take_away';
+  setOrderType: (type: 'dine_in' | 'take_away') => void;
 }
 
 export default function CartSidebar({
@@ -28,7 +30,9 @@ export default function CartSidebar({
   cartTotalPrice,
   handleRemoveFromCart,
   handleCheckout,
-  onEditItem
+  onEditItem,
+  orderType,
+  setOrderType
 }: CartSidebarProps) {
   return (
     <div className="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 text-slate-800 p-4 shadow-2xl relative z-10">
@@ -127,6 +131,36 @@ export default function CartSidebar({
       </div>
 
       <div className="border-t border-slate-200 pt-3 space-y-3.5 shrink-0 bg-white">
+        <div className="space-y-1">
+          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Tipe Pesanan</span>
+          <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setOrderType('dine_in')}
+              className={`flex items-center justify-center gap-1.5 py-1.5 text-xs font-extrabold rounded-md transition-all duration-200 ${
+                orderType === 'dine_in'
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+              }`}
+            >
+              <Utensils className="w-3.5 h-3.5" />
+              Makan di Sini
+            </button>
+            <button
+              type="button"
+              onClick={() => setOrderType('take_away')}
+              className={`flex items-center justify-center gap-1.5 py-1.5 text-xs font-extrabold rounded-md transition-all duration-200 ${
+                orderType === 'take_away'
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+              }`}
+            >
+              <Package className="w-3.5 h-3.5" />
+              Bawa Pulang
+            </button>
+          </div>
+        </div>
+
         <div className="space-y-1">
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pemesan</span>
           <div className="relative">

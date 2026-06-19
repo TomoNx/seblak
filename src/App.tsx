@@ -26,7 +26,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 /** Client-side fallback seed orders (when server is unreachable) */
 const FALLBACK_ORDERS: Order[] = [
   {
-    id: 'SEB-1542', queueNumber: '02', customerName: 'Kang Asep',
+    id: 'SEB-1542', customerName: 'Kang Asep',
     items: [{
       name: 'Seblak Rakyat Murmer', type: 'preset',
       brothName: 'Kuah Cikur Original (Juara)', level: 2,
@@ -106,6 +106,13 @@ function AppContent() {
     [STORAGE_KEYS.settings]: (v: any) => setAllMenuData({ settings: v }),
   }), [setOrders, setAllMenuData]);
   useStorageListener(storageSetters);
+
+  // Update dynamic document title based on settings
+  useEffect(() => {
+    if (settings?.shopName) {
+      document.title = `${settings.shopName} - POS & Self-Service Kiosk`;
+    }
+  }, [settings?.shopName]);
 
   // Phone simulator payment handler
   const handleSimulatePayment = useCallback((orderId: string) => {

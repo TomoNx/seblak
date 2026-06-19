@@ -46,6 +46,7 @@ export default function KioskView({
   const [nameError, setNameError] = useState<boolean>(false);
 
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
+  const [orderType, setOrderType] = useState<'dine_in' | 'take_away'>('dine_in');
 
   const [kioskCategory, setKioskCategory] = useState<'seblak' | 'snacks' | 'drinks'>('seblak');
 
@@ -231,7 +232,8 @@ export default function KioskView({
 
     const newOrder: Partial<Order> = {
       customerName: customerName.trim(),
-      items: orderItems as any
+      items: orderItems as any,
+      orderType
     };
 
     try {
@@ -239,6 +241,7 @@ export default function KioskView({
       setCompletedOrder(savedOrder);
       setCart([]);
       setCustomerName('');
+      setOrderType('dine_in');
       setStep('checkout_success');
     } catch (err) {
       console.error("Gagal melakukan checkout:", err);
@@ -264,6 +267,7 @@ export default function KioskView({
               nameError={nameError} setNameError={setNameError} cartTotalPrice={cartTotalPrice}
               handleRemoveFromCart={handleRemoveFromCart} handleCheckout={handleCheckout}
               onEditItem={handleEditCartItem}
+              orderType={orderType} setOrderType={setOrderType}
             />
           </>
         )}
@@ -281,6 +285,7 @@ export default function KioskView({
           <CheckoutSuccessPanel
             completedOrder={completedOrder} onScanQR={onScanQR}
             onReset={() => { setCompletedOrder(null); setStep('menu'); }}
+            settings={settings}
           />
         )}
       </div>

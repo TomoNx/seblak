@@ -102,7 +102,7 @@ export async function create(req: Request, res: Response) {
 
     const { items: processedItems, totalPrice } = await processOrderItems(order.items);
     const orderId = order.id || `SEB-${Math.floor(1000 + Math.random() * 9000)}`;
-    const queueNumber = order.queueNumber || String(Math.floor(1 + Math.random() * 99)).padStart(2, '0');
+    const queueNumber = order.queueNumber || "";
     const createdAt = order.createdAt || new Date().toISOString();
     const status = order.status || "pending_payment";
 
@@ -116,7 +116,8 @@ export async function create(req: Request, res: Response) {
       status,
       createdAt,
       paidAt: order.paidAt || null,
-      completedAt: order.completedAt || null
+      completedAt: order.completedAt || null,
+      orderType: order.orderType || 'dine_in'
     };
 
     await orderModel.createOrder(newOrder);
@@ -169,7 +170,8 @@ export async function update(req: Request, res: Response) {
       status,
       createdAt,
       paidAt,
-      completedAt
+      completedAt,
+      orderType: order.orderType !== undefined ? order.orderType : existing.orderType
     };
 
     await orderModel.updateOrder(id, updatedOrder);

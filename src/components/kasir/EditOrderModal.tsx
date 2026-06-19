@@ -120,7 +120,7 @@ export default function EditOrderModal({
           <div>
             <p className="text-[10px] text-amber-200 font-bold uppercase tracking-wider">MODUL KASIR MANDIRI</p>
             <h3 className="text-sm font-black uppercase tracking-wide">
-              Ubah Topping & Level: Antrean #{order.queueNumber} - {order.customerName}
+              Ubah Topping & Level: {order.customerName}
             </h3>
             <p className="text-[10.5px] text-slate-200/90 mt-0.5">
               Menu: <span className="font-extrabold text-white">{item.name}</span>

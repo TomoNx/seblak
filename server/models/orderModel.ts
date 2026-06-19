@@ -60,6 +60,7 @@ export async function getAllOrders(): Promise<any[]> {
     createdAt: o.created_at.toISOString ? o.created_at.toISOString() : new Date(o.created_at).toISOString(),
     paidAt: o.paid_at ? (o.paid_at.toISOString ? o.paid_at.toISOString() : new Date(o.paid_at).toISOString()) : undefined,
     completedAt: o.completed_at ? (o.completed_at.toISOString ? o.completed_at.toISOString() : new Date(o.completed_at).toISOString()) : undefined,
+    orderType: o.order_type || 'dine_in',
     items: itemsMap[o.id] || []
   }));
 }
@@ -110,6 +111,7 @@ export async function getOrderById(id: string): Promise<any | null> {
     createdAt: o.created_at.toISOString ? o.created_at.toISOString() : new Date(o.created_at).toISOString(),
     paidAt: o.paid_at ? (o.paid_at.toISOString ? o.paid_at.toISOString() : new Date(o.paid_at).toISOString()) : undefined,
     completedAt: o.completed_at ? (o.completed_at.toISOString ? o.completed_at.toISOString() : new Date(o.completed_at).toISOString()) : undefined,
+    orderType: o.order_type || 'dine_in',
     items: itemsMapped
   };
 }
@@ -120,14 +122,15 @@ export async function createOrder(order: any): Promise<void> {
     await conn.beginTransaction();
 
     await conn.query(
-      `INSERT INTO orders (id, queue_number, customer_name, total_price, payment_method, status, created_at, paid_at, completed_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO orders (id, queue_number, customer_name, total_price, payment_method, status, created_at, paid_at, completed_at, order_type)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         order.id, order.queueNumber, order.customerName, order.totalPrice,
         order.paymentMethod || null, order.status,
         new Date(order.createdAt),
         order.paidAt ? new Date(order.paidAt) : null,
-        order.completedAt ? new Date(order.completedAt) : null
+        order.completedAt ? new Date(order.completedAt) : null,
+        order.orderType || 'dine_in'
       ]
     );
 
@@ -171,7 +174,7 @@ export async function updateOrder(id: string, order: any): Promise<void> {
     await conn.query(
       `UPDATE orders
        SET queue_number = ?, customer_name = ?, total_price = ?,
-           payment_method = ?, status = ?, created_at = ?, paid_at = ?, completed_at = ?
+           payment_method = ?, status = ?, created_at = ?, paid_at = ?, completed_at = ?, order_type = ?
        WHERE id = ?`,
       [
         order.queueNumber, order.customerName, order.totalPrice,
@@ -179,6 +182,7 @@ export async function updateOrder(id: string, order: any): Promise<void> {
         new Date(order.createdAt),
         order.paidAt ? new Date(order.paidAt) : null,
         order.completedAt ? new Date(order.completedAt) : null,
+        order.orderType || 'dine_in',
         id
       ]
     );

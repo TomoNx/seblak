@@ -163,7 +163,8 @@ export async function initDb(): Promise<void> {
         status VARCHAR(20) NOT NULL DEFAULT 'draft',
         created_at DATETIME NOT NULL,
         paid_at DATETIME,
-        completed_at DATETIME
+        completed_at DATETIME,
+        order_type VARCHAR(20) NOT NULL DEFAULT 'dine_in'
       )
     `);
 
@@ -194,6 +195,18 @@ export async function initDb(): Promise<void> {
     `);
 
     await conn.query("SET FOREIGN_KEY_CHECKS = 1");
+
+    // Dynamic migration block
+    try {
+      await conn.query("ALTER TABLE orders ADD COLUMN order_type VARCHAR(20) NOT NULL DEFAULT 'dine_in'");
+      console.log("Migration: order_type column added to orders table.");
+    } catch (migrateErr: any) {
+      if (migrateErr.code === 'ER_DUP_FIELDNAME' || migrateErr.errno === 1060) {
+        console.log("Migration: order_type column already exists on orders table.");
+      } else {
+        console.error("Migration warning: failed to execute ALTER TABLE orders ADD COLUMN order_type:", migrateErr);
+      }
+    }
   } finally {
     conn.release();
   }
@@ -291,13 +304,14 @@ async function seedInitialData() {
       console.log("Seeding default historic orders...");
       for (const order of SEEDED_ORDERS) {
         await conn.query(
-          "INSERT INTO orders (id, queue_number, customer_name, total_price, payment_method, status, created_at, paid_at, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO orders (id, queue_number, customer_name, total_price, payment_method, status, created_at, paid_at, completed_at, order_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [
             order.id, order.queueNumber, order.customerName, order.totalPrice,
             order.paymentMethod, order.status,
             new Date(order.createdAt),
             order.paidAt ? new Date(order.paidAt) : null,
-            order.completedAt ? new Date(order.completedAt) : null
+            order.completedAt ? new Date(order.completedAt) : null,
+            (order as any).orderType || 'dine_in'
           ]
         );
 

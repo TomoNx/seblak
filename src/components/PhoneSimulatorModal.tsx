@@ -66,11 +66,11 @@ export default function PhoneSimulatorModal({ order, onClose, onSimulatePayment 
 
           {/* Scrollable Content */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4">
-            {/* Queue Number */}
+            {/* Customer Details */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-3 text-center shadow-3xs">
-              <p className="text-[9px] text-slate-400 font-black uppercase tracking-wider">NOMOR ANTREAN</p>
-              <h2 className="text-2xl font-black text-amber-600 font-mono tracking-tight my-0.5">Q-{order.queueNumber}</h2>
-              <p className="text-[10px] text-slate-600 font-bold uppercase">Nama: <span className="font-black">{order.customerName}</span></p>
+              <p className="text-[9px] text-slate-400 font-black uppercase tracking-wider">DETAIL PELANGGAN</p>
+              <h2 className="text-xl font-black text-amber-600 tracking-tight my-0.5 uppercase">{order.customerName}</h2>
+              <p className="text-[10px] text-slate-600 font-mono font-bold">ID PESANAN: {order.id}</p>
             </div>
 
             {/* Status Panel: Pending Payment */}

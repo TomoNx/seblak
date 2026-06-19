@@ -65,22 +65,8 @@ export default function OrderDetailPanel({
     setCashReceived('');
   };
 
-  const handlePrint = (orderId: string) => {
-    const doc = document.getElementById(`receipt-container-${orderId}`);
-    if (doc) {
-      const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write('<html><head><title>Print Receipt</title>');
-        printWindow.document.write('<script src="https://cdn.tailwindcss.com"></script>');
-        printWindow.document.write('</head><body style="padding: 20px;">');
-        printWindow.document.write(doc.innerHTML);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        setTimeout(() => {
-          printWindow.print();
-        }, 500);
-      }
-    }
+  const handlePrint = (_orderId: string) => {
+    window.print();
   };
 
   const handlePayConfirmAndPrint = () => {
@@ -126,7 +112,7 @@ export default function OrderDetailPanel({
           </div>
           <div>
             <h3 className="font-extrabold text-xs uppercase text-slate-900">{order.customerName}</h3>
-            <p className="text-[9px] text-slate-400 font-mono">ID: {order.id} • Antrean {order.queueNumber}</p>
+            <p className="text-[9px] text-slate-400 font-mono">ID: {order.id}</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
@@ -147,7 +133,7 @@ export default function OrderDetailPanel({
           <Receipt order={order} settings={settings} />
         </div>
         
-        {order.status !== 'cancelled' && (
+        {order.status !== 'cancelled' && order.status !== 'paid' && order.status !== 'completed' && (
           <div className="mt-4 border-t border-dashed border-slate-200 pt-4">
             <button
               onClick={() => onBeginEditOrder(order)}

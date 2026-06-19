@@ -25,8 +25,7 @@ export default function OrderQueueList({ orders, statusFilter, selectedOrderId, 
       // Filter by search query
       const matchesSearch = 
         order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.queueNumber.includes(searchQuery);
+        order.customerName.toLowerCase().includes(searchQuery.toLowerCase());
 
       return matchesStatus && matchesSearch;
     });
@@ -76,24 +75,23 @@ export default function OrderQueueList({ orders, statusFilter, selectedOrderId, 
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5">
                       <span className="text-[11px] font-mono font-black text-slate-400">{order.id}</span>
-                      <span className={`text-[8px] font-bold uppercase rounded px-1.5 py-0.2 ${
+                      <span className={`text-[8px] font-bold uppercase rounded px-1.5 py-0.5 ${
                         order.status === 'cancelled' ? 'bg-slate-200 text-slate-600' :
                         isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800 animate-pulse'
                       }`}>
                         {order.status === 'cancelled' ? 'Batal' : isPaid ? 'Lunas' : 'Belum Bayar'}
                       </span>
+                      <span className={`text-[8px] font-bold uppercase rounded px-1.5 py-0.5 ${
+                        order.orderType === 'take_away' ? 'bg-sky-100 text-sky-800' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {order.orderType === 'take_away' ? '🥡 Dibungkus' : '🍽️ Di Tempat'}
+                      </span>
                     </div>
                     <h4 className="font-extrabold text-sm uppercase text-slate-800 truncate max-w-[140px] leading-snug">
                       {order.customerName}
                     </h4>
-                  </div>
-
-                  {/* Queue badge */}
-                  <div className="bg-slate-100 px-2 py-0.5 rounded text-center shrink-0 min-w-8 border border-slate-200/55">
-                    <p className="text-[7px] text-slate-400 font-bold uppercase tracking-wider">Antrean</p>
-                    <p className="text-sm font-mono font-black text-slate-800 leading-none">{order.queueNumber}</p>
                   </div>
                 </div>
 

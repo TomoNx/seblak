@@ -7,12 +7,14 @@ interface CheckoutSuccessPanelProps {
   completedOrder: Order;
   onScanQR?: (orderId: string) => void;
   onReset: () => void;
+  settings?: { shopName: string; shopAddress?: string; shopPhone?: string };
 }
 
 export default function CheckoutSuccessPanel({
   completedOrder,
   onScanQR,
-  onReset
+  onReset,
+  settings
 }: CheckoutSuccessPanelProps) {
   const [countdown, setCountdown] = useState(10);
 
@@ -59,7 +61,7 @@ export default function CheckoutSuccessPanel({
       </div>
 
       <div className="w-full max-w-sm">
-        <Receipt order={completedOrder} onScanQR={onScanQR} showActions={false} />
+        <Receipt order={completedOrder} onScanQR={onScanQR} showActions={false} settings={settings} />
       </div>
 
       <button

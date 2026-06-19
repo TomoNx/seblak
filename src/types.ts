@@ -42,7 +42,7 @@ export interface CartItem {
 
 export interface Order {
   id: string; // Format e.g., #SEB-1025
-  queueNumber: string; // Simple 2-digit number (e.g. 25, 26)
+  queueNumber?: string; // Simple 2-digit number (e.g. 25, 26)
   customerName: string;
   items: {
     name: string;
@@ -60,6 +60,7 @@ export interface Order {
   createdAt: string;
   paidAt?: string;
   completedAt?: string;
+  orderType?: 'dine_in' | 'take_away';
 }
 
 export interface SnackOrDrink {

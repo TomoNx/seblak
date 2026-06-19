@@ -37,7 +37,8 @@ export const OrderCreateSchema = z.object({
   createdAt: z.string().optional().nullable(),
   paidAt: z.string().optional().nullable(),
   completedAt: z.string().optional().nullable(),
-  totalPrice: z.number().optional().nullable()
+  totalPrice: z.number().optional().nullable(),
+  orderType: z.enum(['dine_in', 'take_away']).optional().nullable()
 });
 
 export const OrderUpdateSchema = OrderCreateSchema.partial();

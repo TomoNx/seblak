@@ -93,7 +93,9 @@ export default function KasirView({
             <DollarSign className="w-5 h-5 text-slate-900 stroke-[2.5px]" />
           </div>
           <div>
-            <h1 className="text-base font-extrabold tracking-tight">KASIR UTAMA MALIOBORO</h1>
+            <h1 className="text-base font-extrabold tracking-tight">
+              KASIR UTAMA {settings?.shopName ? settings.shopName.toUpperCase() : 'MALIOBORO'}
+            </h1>
             <p className="text-[10px] text-slate-400 font-medium">Terminal Pembayaran & Antrean Struk Masuk • Seblak POS</p>
           </div>
         </div>
@@ -166,7 +168,7 @@ export default function KasirView({
 
       <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
         {statusFilter === 'analytics' ? (
-          <AdminStatsView orders={orders} />
+          <AdminStatsView orders={orders} settings={settings} />
         ) : statusFilter === 'menu_management' ? (
           <MenuManager
             toppings={toppings} onSaveToppings={onSaveToppings}

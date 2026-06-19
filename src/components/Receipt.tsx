@@ -23,7 +23,7 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
   };
 
   return (
-    <div className="flex flex-col items-center bg-transparent">
+    <div className="flex flex-col items-center bg-transparent print-receipt-only">
       {/* Receipt Frame */}
       <div 
         id={`receipt-${order.id}`}
@@ -37,7 +37,7 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
         <div className="text-center mb-4 pb-4 border-b border-dashed border-slate-300">
           <div className="flex justify-center items-center gap-1.5 text-amber-600 font-bold text-lg tracking-wider">
             <Flame className="w-5 h-5 fill-red-500 stroke-red-600 animate-pulse" />
-            <span>SEBLAK JEBRED</span>
+            <span>{settings?.shopName || 'SEBLAK JEBRED'}</span>
           </div>
           <p className="text-[10px] text-slate-500 mt-1 uppercase">Sunda Authentic & Pedas Juara</p>
           <p className="text-[9px] text-slate-400">{settings?.shopAddress || 'Jln. Malioboro No. 25, Yogyakarta'}</p>
@@ -46,10 +46,6 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
 
         {/* Metadata */}
         <div className="mb-4 text-[10px] space-y-1 text-slate-600 border-b border-dashed border-slate-200 pb-2">
-          <div className="flex justify-between">
-            <span>No. Antrean:</span>
-            <span className="text-base font-bold text-slate-900 bg-amber-100 px-1.5 rounded">{order.queueNumber}</span>
-          </div>
           <div className="flex justify-between">
             <span>Kode Pesanan:</span>
             <span className="font-bold text-slate-900">{order.id}</span>
@@ -61,6 +57,10 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
           <div className="flex justify-between">
             <span>Pelanggan:</span>
             <span className="font-semibold uppercase">{order.customerName || 'Pelanggan'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Tipe Pesanan:</span>
+            <span className="font-bold">{order.orderType === 'take_away' ? 'Bawa Pulang (Dibungkus)' : 'Makan di Tempat'}</span>
           </div>
           <div className="flex justify-between">
             <span>Status:</span>
@@ -132,31 +132,6 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
 
         {/* Footer info/barcode mock */}
         <div className="text-center space-y-3 pt-2">
-          {/* QR Code Option */}
-          <div className="flex flex-col items-center justify-center p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-            <span className="text-[8px] text-slate-500 font-extrabold uppercase tracking-widest text-amber-750">
-              QRIS / STRUK DIGITAL DI HP
-            </span>
-            <div 
-              onClick={() => onScanQR && onScanQR(order.id)}
-              className={`w-28 h-28 bg-white border border-slate-300 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-amber-500 hover:border-amber-500 transition-all ${
-                onScanQR ? 'cursor-pointer active:scale-95' : 'cursor-default'
-              }`}
-              title={onScanQR ? "Klik untuk mensimulasikan scan QR Code dengan HP!" : undefined}
-            >
-              <img 
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(window.location.origin + '/?track=' + order.id)}`} 
-                alt={`QR Code ${order.id}`}
-                className="w-full h-full object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            {onScanQR && (
-              <span className="text-[7.5px] text-amber-700 font-black tracking-wider uppercase animate-pulse">
-                👉 KETUK QR UNTUK AKSES HP 👈
-              </span>
-            )}
-          </div>
 
           <div className="flex flex-col items-center opacity-60">
             {/* Mock Barcode */}
@@ -189,7 +164,7 @@ export default function Receipt({ order, onPrint, showActions = true, onScanQR, 
 
       {/* Action panel underneath receipt */}
       {showActions && (
-        <div className="mt-4 flex gap-2 w-full max-w-sm">
+        <div className="mt-4 flex gap-2 w-full max-w-sm no-print">
           <button
             onClick={handlePrintAction}
             className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-semibold shadow transition-all duration-150"
