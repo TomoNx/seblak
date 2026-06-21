@@ -81,7 +81,7 @@ async function runTestV2() {
       items: [{
         name: "Seblak V2", type: "custom", brothName: "Original", level: 5,
         pricePerUnit: 15000, quantity: 1, notes: "Pedas gila",
-        toppings: [{ id: "t_bakso_sapi", name: "Bakso Sapi (3 pcs)", quantity: 1, price: 8000 }]
+        toppings: [{ id: "t_bakso_sapi", name: "Bakso Sapi (3 pcs)", quantity: 7, price: 8000 }]
       }],
       totalPrice: 20000,
       paymentMethod: "Tunai",

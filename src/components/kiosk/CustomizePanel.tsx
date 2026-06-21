@@ -143,6 +143,9 @@ export default function CustomizePanel({
                   </div>
                   <span className="text-xs font-bold font-mono text-slate-800 mt-1">LVL {sl.level}</span>
                   <span className="text-[8px] text-slate-500 mt-0.5 truncate max-w-[80px] font-bold">{sl.level === 0 ? 'Polos' : sl.level === 5 ? 'Neraka!' : 'Pedas'}</span>
+                  <span className="text-[7.5px] font-black text-rose-500 mt-1 tracking-wider bg-rose-50 px-1 py-0.5 rounded-sm">
+                    MIN {sl.level <= 1 ? 3 : sl.level === 2 ? 4 : sl.level === 3 ? 5 : sl.level === 4 ? 6 : 7} TOPING
+                  </span>
                 </button>
               );
             })}
@@ -368,7 +371,21 @@ export default function CustomizePanel({
             </button>
             
             <button
-              onClick={onAddToCart}
+              onClick={() => {
+                const lvl = customItem.level ?? 0;
+                let minReq = 3;
+                if (lvl === 2) minReq = 4;
+                if (lvl === 3) minReq = 5;
+                if (lvl === 4) minReq = 6;
+                if (lvl >= 5) minReq = 7;
+                
+                const totalTops = customItem.toppings?.reduce((sum, t) => sum + t.quantity, 0) || 0;
+                if (totalTops < minReq) {
+                  alert(`Level kepedasan ${lvl} membutuhkan minimal ${minReq} topping (Kamu baru pilih ${totalTops} topping)`);
+                  return;
+                }
+                onAddToCart();
+              }}
               className="flex-2 bg-amber-600 hover:bg-amber-700 text-white font-black py-3 px-1 rounded-xl shadow transition-colors text-xs uppercase text-center flex items-center justify-center gap-1.5"
             >
               <ShoppingBag className="w-3.5 h-3.5" />

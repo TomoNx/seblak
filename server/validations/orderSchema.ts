@@ -25,6 +25,25 @@ const OrderItemSchema = z.object({
   quantity: z.number().int().min(1, "Jumlah item minimal 1"),
   notes: z.string().optional().nullable(),
   pricePerUnit: z.number().optional().nullable()
+}).superRefine((item, ctx) => {
+  if (item.type === 'custom' || item.type === 'preset') {
+    const lvl = item.level ?? 0;
+    const toppingsCount = item.toppings?.reduce((sum, t) => sum + t.quantity, 0) || 0;
+    
+    let minReq = 3;
+    if (lvl === 2) minReq = 4;
+    if (lvl === 3) minReq = 5;
+    if (lvl === 4) minReq = 6;
+    if (lvl >= 5) minReq = 7;
+
+    if (toppingsCount < minReq) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Level kepedasan ${lvl} membutuhkan minimal ${minReq} topping (Saat ini: ${toppingsCount}).`,
+        path: ['toppings']
+      });
+    }
+  }
 });
 
 export const OrderCreateSchema = z.object({
