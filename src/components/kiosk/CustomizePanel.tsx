@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { CartItem, Broth, Topping, PresetMenu } from '../../types';
 import { SPICE_LEVELS, formatRupiah } from '../../data';
 import { getToppingEmoji } from './utils';
-import { Flame, Check, Minus, Plus } from 'lucide-react';
+import { Flame, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
 
 interface CustomizePanelProps {
   customItem: Partial<CartItem>;
@@ -369,8 +369,9 @@ export default function CustomizePanel({
             
             <button
               onClick={onAddToCart}
-              className="flex-2 bg-red-600 hover:bg-red-700 text-white font-black py-3 px-1 rounded-xl shadow transition-colors text-xs uppercase text-center"
+              className="flex-2 bg-amber-600 hover:bg-amber-700 text-white font-black py-3 px-1 rounded-xl shadow transition-colors text-xs uppercase text-center flex items-center justify-center gap-1.5"
             >
+              <ShoppingBag className="w-3.5 h-3.5" />
               Masukkan Keranjang
             </button>
           </div>

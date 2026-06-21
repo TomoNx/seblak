@@ -188,13 +188,13 @@ export default function CartSidebar({
 
         <div className="flex justify-between items-center text-xs pt-1">
           <span className="text-slate-500 font-semibold">Total Pembayaran</span>
-          <span className="text-base font-mono font-black text-red-600">{formatRupiah(cartTotalPrice)}</span>
+          <span className="text-base font-mono font-black text-amber-700">{formatRupiah(cartTotalPrice)}</span>
         </div>
 
         <button
           onClick={handleCheckout}
           disabled={cart.length === 0}
-          className="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-black py-3 rounded-xl shadow-md transition-all duration-150 flex items-center justify-center gap-1.5 uppercase text-xs tracking-wider"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-black py-3 rounded-xl shadow-md transition-all duration-150 flex items-center justify-center gap-1.5 uppercase text-xs tracking-wider"
         >
           Selesai & Cetak Struk
           <ChevronRight className="w-4 h-4" />
