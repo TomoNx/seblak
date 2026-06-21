@@ -220,7 +220,7 @@ export const SEEDED_MENU_CATEGORIES = [
 
 export const SEEDED_SETTINGS = {
   qrisImage: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=seblak-pos-payment-gateway',
-  shopName: 'SEBLAK MALIOBORO JUARA',
+  shopName: 'Seblak Jeletet Murni',
   shopAddress: 'Jln. Malioboro No. 25, Yogyakarta',
   shopPhone: '08123456789',
   adminPin: '123456'
