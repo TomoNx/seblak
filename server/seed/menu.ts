@@ -4,28 +4,43 @@
  */
 
 export const SEEDED_TOPPINGS = [
-  { id: 't_kerupuk_kuning', name: 'Kerupuk Kuning Sigung', category: 'karbo', price: 1500, stock: 50, description: 'Kerupuk seblak klasik, kenyal dan lembut' },
-  { id: 't_kerupuk_pelangi', name: 'Kerupuk Bawang Pelangi', category: 'karbo', price: 1500, stock: 45, description: 'Kerupuk warna-warni rasa bawang gurih' },
-  { id: 't_kerupuk_orange', name: 'Kerupuk Potato Orange', category: 'karbo', price: 1500, stock: 40, description: 'Kerupuk kentang oren renyah saat kering, kenyal saat matang' },
-  { id: 't_makaroni', name: 'Makaroni Spiral', category: 'karbo', price: 2000, stock: 60, description: 'Makaroni pilihan yang mekar sempurna' },
-  { id: 't_kwetiau', name: 'Kwetiau Kenyal', category: 'karbo', price: 2500, stock: 35, description: 'Kwetiau basah yang lembut dan kenyal' },
-  { id: 't_mie', name: 'Mie Keriting', category: 'karbo', price: 2500, stock: 50, description: 'Mie instan keriting penggugah selera' },
-  { id: 't_bakso', name: 'Bakso Sapi Slice (3 pcs)', category: 'protein', price: 3000, stock: 40, description: 'Irisan bakso sapi asli yang gurih berdaging' },
-  { id: 't_sosis', name: 'Sosis Sapi Premium (4 pcs)', category: 'protein', price: 3000, stock: 40, description: 'Sosis sapi iris premium berkualitas' },
-  { id: 't_ceker', name: 'Ceker Jumbo Empuk (2 pcs)', category: 'protein', price: 4000, stock: 25, description: 'Ceker ayam yang direbus lama hingga empuk dan lumer' },
-  { id: 't_dumpling_keju', name: 'Dumpling Keju (1 pc)', category: 'protein', price: 4000, stock: 30, description: 'Bakso ikan premium dengan isi keju meleleh di dalamnya' },
-  { id: 't_dumpling_ayam', name: 'Dumpling Ayam (1 pc)', category: 'protein', price: 3500, stock: 30, description: 'Bakso ikan premium isi daging ayam cincang lezat' },
-  { id: 't_chikuwa', name: 'Chikuwa Ring (3 pcs)', category: 'protein', price: 3000, stock: 35, description: 'Olahan ikan khas jepang berbentuk tabung berlubang' },
-  { id: 't_crabstick', name: 'Crab Stick Slice (2 pcs)', category: 'protein', price: 3500, stock: 25, description: 'Stik kepiting olahan premium bertekstur lembut' },
-  { id: 't_telur_puyuh', name: 'Telur Puyuh Rebus (3 pcs)', category: 'protein', price: 3500, stock: 20, description: 'Telur puyuh segar, penambah rasa gurih alami' },
-  { id: 't_telur_ayam', name: 'Telur Ayam Orak-arik', category: 'protein', price: 4500, stock: 50, description: 'Telur ayam kocok segar, dicampur langsung ke dalam kuah' },
-  { id: 't_batagor', name: 'Batagor Kering (3 pcs)', category: 'cuanki', price: 2000, stock: 80, description: 'Batagor mini kering khas Bandung, menyerap kuah cikur' },
-  { id: 't_cuanki_lidah', name: 'Cuanki Lidah (2 pcs)', category: 'cuanki', price: 2500, stock: 60, description: 'Garing krispi, sangat nikmat saat sudah menyerap kuah seblak' },
-  { id: 't_cuanki_tahu', name: 'Cuanki Tahu Spons (2 pcs)', category: 'cuanki', price: 2500, stock: 55, description: 'Tahu kering berpori yang sangat kaya rasa kuah kencur' },
-  { id: 't_pilus', name: 'Pilus Cikur Krenyes', category: 'cuanki', price: 2000, stock: 70, description: 'Pilus renyah aroma kencur, wajib ditabur saat selesai disajikan' },
-  { id: 't_pakcoy', name: 'Sayur Pakcoy Segar', category: 'extra', price: 1500, stock: 40, description: 'Pakcoy hijau segar pelengkap gizi' },
-  { id: 't_jamur', name: 'Jamur Kuping Iris', category: 'extra', price: 2000, stock: 25, description: 'Jamur kuping hitam bertekstur kenyal kriuk' },
-  { id: 't_kol', name: 'Kol Segar Irisan', category: 'extra', price: 1500, stock: 30, description: 'Sayuran kol menambah kepekatan kuah seblak' }
+  // Karbo
+  { id: 't_mie', name: 'Mie', category: 'karbo', price: 7000, stock: 100, description: 'Mie instan keriting' },
+  { id: 't_kwetiau', name: 'Kwetiau', category: 'karbo', price: 7000, stock: 80, description: 'Kwetiau kenyal dan lembut' },
+  { id: 't_bihun', name: 'Bihun', category: 'karbo', price: 7000, stock: 80, description: 'Bihun halus' },
+  { id: 't_makaroni', name: 'Makaroni', category: 'karbo', price: 7000, stock: 90, description: 'Makaroni spiral' },
+  { id: 't_topoki', name: 'Topoki (6 pcs)', category: 'karbo', price: 8000, stock: 50, description: 'Kue beras khas Korea' },
+  
+  // Protein
+  { id: 't_salmon_ball', name: 'Salmon Ball (2 pcs)', category: 'protein', price: 8000, stock: 60, description: 'Bakso rasa salmon' },
+  { id: 't_telur', name: 'Telur (Ceplok/Acak)', category: 'protein', price: 8000, stock: 100, description: 'Telur ayam goreng ceplok atau diacak langsung' },
+  { id: 't_chikuwa', name: 'Cikuwa (3 pcs)', category: 'protein', price: 8000, stock: 80, description: 'Olahan ikan chikuwa ring' },
+  { id: 't_fish_roll', name: 'Fish Roll (3 pcs)', category: 'protein', price: 8000, stock: 60, description: 'Olahan ikan fish roll' },
+  { id: 't_crab_nugget', name: 'Crab Nugget (3 pcs)', category: 'protein', price: 8000, stock: 60, description: 'Nugget rasa kepiting' },
+  { id: 't_dumpling_ayam', name: 'Dumpling Ayam (2 pcs)', category: 'protein', price: 8000, stock: 70, description: 'Dumpling dengan isi ayam' },
+  { id: 't_dumpling_keju', name: 'Dumpling Keju (2 pcs)', category: 'protein', price: 8000, stock: 70, description: 'Dumpling dengan isi keju meleleh' },
+  { id: 't_bakso_sapi', name: 'Bakso Sapi (3 pcs)', category: 'protein', price: 8000, stock: 80, description: 'Bakso daging sapi asli' },
+  { id: 't_bakso_ikan', name: 'Bakso Ikan (3 pcs)', category: 'protein', price: 8000, stock: 80, description: 'Bakso olahan daging ikan' },
+  { id: 't_bakso_mini', name: 'Bakso Mini (3 pcs)', category: 'protein', price: 8000, stock: 85, description: 'Bakso sapi ukuran mini' },
+  { id: 't_baso_aci', name: 'Baso Aci (3 pcs)', category: 'protein', price: 8000, stock: 90, description: 'Baso aci kenyal bumbu gurih' },
+  { id: 't_telur_asin', name: 'Telor Asin (1 butir)', category: 'protein', price: 11000, stock: 30, description: 'Telur asin utuh matang' },
+  { id: 't_sosis', name: 'Sosis (2 pcs)', category: 'protein', price: 9000, stock: 75, description: 'Sosis sapi iris premium' },
+  { id: 't_ekado', name: 'Ekado (2 pcs)', category: 'protein', price: 12000, stock: 40, description: 'Olahan ikan dibungkus kembang tahu' },
+  { id: 't_siomay_ayam', name: 'Siomay Ayam (2 pcs)', category: 'protein', price: 12000, stock: 50, description: 'Siomay dimsum isi ayam' },
+  { id: 't_baso_jumbo', name: 'Baso Jumbo (Urat/Cincang)', category: 'protein', price: 20000, stock: 25, description: 'Bakso sapi ukuran besar pilihan urat atau isi cincang' },
+
+  // Cuanki
+  { id: 't_cireng', name: 'Cireng', category: 'cuanki', price: 7000, stock: 70, description: 'Aci digoreng' },
+  { id: 't_tahu_baso', name: 'Tahu Baso (2 pcs)', category: 'cuanki', price: 9000, stock: 50, description: 'Tahu dengan isi adonan baso' },
+  { id: 't_batagor_lidah', name: 'Batagor Lidah (2 pcs)', category: 'cuanki', price: 8000, stock: 65, description: 'Cuanki lidah kering gurih' },
+
+  // Extra
+  { id: 't_kikil', name: 'Kikil', category: 'extra', price: 8000, stock: 40, description: 'Kikil sapi empuk bumbu rempah' },
+  { id: 't_enoki', name: 'Sayur Enoki', category: 'extra', price: 8000, stock: 40, description: 'Jamur enoki segar' },
+  { id: 't_ceker', name: 'Ceker (2 pcs)', category: 'extra', price: 8000, stock: 35, description: 'Ceker ayam empuk lumer' },
+  { id: 't_tulang', name: 'Tulang', category: 'extra', price: 8000, stock: 30, description: 'Tulang muda gurih' },
+  { id: 't_sayap', name: 'Sayap (1 pcs)', category: 'extra', price: 12000, stock: 30, description: 'Sayap ayam bumbu ungkep' },
+  { id: 't_kulit_ayam', name: 'Kulit Ayam', category: 'extra', price: 10000, stock: 45, description: 'Kulit ayam goreng krispi' }
 ];
 
 export const SEEDED_BROTHS = [
@@ -42,7 +57,7 @@ export const SEEDED_PRESETS = [
     name: 'Seblak Rakyat Murmer',
     description: 'Pilihan ekonomis tapi nikmat! Dilengkapi kerupuk pelangi basah, mie, makaroni, telur orak-arik & batagor kering khas.',
     basePrice: 12000,
-    defaultToppings: ['t_kerupuk_pelangi', 't_makaroni', 't_mie', 't_telur_ayam', 't_batagor'],
+    defaultToppings: ['t_kerupuk', 't_makaroni', 't_mie', 't_telur', 't_batagor_lidah'],
     defaultLevel: 2,
     defaultBroth: 'b_cikur_ori',
     image: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=80&w=400',
@@ -53,7 +68,7 @@ export const SEEDED_PRESETS = [
     name: 'Seblak Ndower Sosis Bakso',
     description: 'Sangat direkomendasikan bagi pecinta pedas kenyal. Kombinasi sosis beef, bakso sapi slice, makaroni, cuanki tahu, kol, dan kuah cikur pedas mantap.',
     basePrice: 17500,
-    defaultToppings: ['t_kerupuk_kuning', 't_makaroni', 't_sosis', 't_bakso', 't_cuanki_tahu', 't_kol'],
+    defaultToppings: ['t_kerupuk', 't_makaroni', 't_sosis', 't_bakso_sapi', 't_cireng', 't_kikil'],
     defaultLevel: 4,
     defaultBroth: 'b_cikur_ori',
     image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&q=80&w=400',
@@ -64,7 +79,7 @@ export const SEEDED_PRESETS = [
     name: 'Seblak Seafood Suki Mewah',
     description: 'Sensasi kuah seblak berpadu dengan topping suki kelas bintang: Dumpling keju, chikuwa, crab stick, jamur kuping, kwetiau, telur puyuh, kuah creamy keju.',
     basePrice: 24500,
-    defaultToppings: ['t_kwetiau', 't_chikuwa', 't_crabstick', 't_dumpling_keju', 't_telur_puyuh', 't_jamur'],
+    defaultToppings: ['t_kwetiau', 't_chikuwa', 't_crab_nugget', 't_dumpling_keju', 't_dumpling_ayam', 't_enoki'],
     defaultLevel: 3,
     defaultBroth: 'b_creamy_keju',
     image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&q=80&w=400',
@@ -75,7 +90,7 @@ export const SEEDED_PRESETS = [
     name: 'Seblak Mukbang Ceker Lumer',
     description: 'Porsi melimpah ruah bikin kenyang maksimal. Nikmati 2 pcs ceker ayam lembut lumer, batagor kering, telur orak-arik, dumpling ayam, sosis, mie dan pelengkap pilus cikur!',
     basePrice: 28000,
-    defaultToppings: ['t_mie', 't_ceker', 't_telur_ayam', 't_dumpling_ayam', 't_sosis', 't_batagor', 't_pilus', 't_pakcoy'],
+    defaultToppings: ['t_mie', 't_ceker', 't_telur', 't_dumpling_ayam', 't_sosis', 't_batagor_lidah', 't_tahu_baso', 't_enoki'],
     defaultLevel: 3,
     defaultBroth: 'b_cikur_ori',
     image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=400',
@@ -84,65 +99,108 @@ export const SEEDED_PRESETS = [
 ];
 
 export const SEEDED_SNACKS_AND_DRINKS = [
+  // Chilli Oil Menu (Snack)
   {
-    id: 'd_teh_manis',
-    name: 'Es Teh Manis Jumbo',
-    category: 'drink',
-    price: 4000,
-    description: 'Es teh manis segar ukuran jumbo, pereda pedas paling ampuh.',
-    image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=450',
+    id: 's_pangsit_chilli_oil',
+    name: 'Pangsit Chilli Oil',
+    category: 'snack',
+    price: 12000,
+    description: 'Pangsit kukus lembut disiram bumbu chilli oil wangi pedas gurih.',
+    image: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&q=80&w=450',
     isPopular: true
   },
   {
-    id: 'd_jeruk_peras',
-    name: 'Es Jeruk Peras Murni',
+    id: 's_mie_chilli_oil',
+    name: 'Mie Chilli Oil',
+    category: 'snack',
+    price: 18000,
+    description: 'Mie kenyal gurih diaduk dengan bumbu chilli oil khas pedas mantap.',
+    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&q=80&w=450',
+    isPopular: true
+  },
+  // Minuman (Drink)
+  {
+    id: 'd_jeruk_nipis',
+    name: 'Jeruk Nipis',
     category: 'drink',
-    price: 6000,
-    description: 'Jeruk peras murni segar asli, manis asam menyegarkan tenggorokan.',
+    price: 14000,
+    description: 'Minuman jeruk nipis asam manis segar dingin.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=450'
+  },
+  {
+    id: 'd_es_cappucino_cincau',
+    name: 'Es Cappucino Cincau',
+    category: 'drink',
+    price: 12000,
+    description: 'Es kopi cappuccino creamy dipadu dengan serutan cincau hitam manis.',
+    image: 'https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&q=80&w=450',
+    isPopular: true
+  },
+  {
+    id: 'd_es_lychee_tea',
+    name: 'Es Lychee Tea',
+    category: 'drink',
+    price: 14000,
+    description: 'Es teh rasa leci dengan tambahan buah leci asli.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=450'
+  },
+  {
+    id: 'd_es_jeruk',
+    name: 'Es Jeruk',
+    category: 'drink',
+    price: 14000,
+    description: 'Es jeruk peras segar manis murni.',
+    image: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&q=80&w=450'
+  },
+  {
+    id: 'd_es_jelly',
+    name: 'Es Jelly',
+    category: 'drink',
+    price: 14000,
+    description: 'Es susu segar manis dengan aneka jelly kenyal warna-warni.',
+    image: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&q=80&w=450'
+  },
+  {
+    id: 'd_es_lychee_yakult',
+    name: 'Es Lychee Yakult',
+    category: 'drink',
+    price: 14000,
+    description: 'Perpaduan segar buah leci manis dan yakult yang asam segar dingin.',
+    image: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&q=80&w=450',
+    isPopular: true
+  },
+  {
+    id: 'd_es_lemon_tea',
+    name: 'Es Lemon Tea',
+    category: 'drink',
+    price: 13000,
+    description: 'Es teh lemon segar asam manis melegakan tenggorokan.',
     image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=450',
-    isPopular: false
+    isPopular: true
   },
   {
     id: 'd_air_mineral',
-    name: 'Air Mineral Dingin',
+    name: 'Air Mineral',
     category: 'drink',
-    price: 3000,
-    description: 'Air mineral kemasan botol dingin dan steril.',
+    price: 7000,
+    description: 'Air mineral botol dingin.',
     image: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&q=80&w=450'
   },
   {
-    id: 'd_badak_sarsaparilla',
-    name: 'Soda Badak Medan',
+    id: 'd_es_teh_manis',
+    name: 'Es Teh Manis',
     category: 'drink',
-    price: 8000,
-    description: 'Soda jadul legendaris rasa sarsaparilla asli Medan, nikmat melegakan.',
-    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&q=80&w=450',
-    isPopular: true
+    price: 6000,
+    description: 'Es teh manis segar aromatik.',
+    image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=450'
   },
   {
-    id: 's_cireng',
-    name: 'Cireng Rujak Garing',
-    category: 'snack',
-    price: 10000,
-    description: 'Cireng renyah di luar, kenyal hangat di dalam dengan bumbu rujak pedas manis.',
-    image: 'https://images.unsplash.com/photo-1505394033774-8ff6222b84f6?auto=format&fit=crop&q=80&w=450',
-    isPopular: true
-  },
-  {
-    id: 's_tempe_mendoan',
-    name: 'Tempe Mendoan (4 pcs)',
-    category: 'snack',
-    price: 9000,
-    description: 'Tempe mendoan lebar gurih wangi dengan sambal kecap cabai rawit.',
-    image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=450'
-  },
-  {
-    id: 's_kerupuk_kaleng',
-    name: 'Kerupuk Putih Kaleng',
-    category: 'snack',
-    price: 2000,
-    description: 'Kerupuk putih legendaris yang renyah gurih, teman sejati makan seblak.',
-    image: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&q=80&w=450'
+    id: 'd_es_teh_tawar',
+    name: 'Es Teh Tawar',
+    category: 'drink',
+    price: 4000,
+    description: 'Es teh tawar dingin.',
+    image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=450'
   }
 ];
 
