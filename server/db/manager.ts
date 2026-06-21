@@ -212,12 +212,9 @@ export async function initDb(): Promise<void> {
   }
   
   console.log("Tables created successfully.");
-
-  // Seeding initial data...
-  await seedInitialData();
 }
 
-async function seedInitialData() {
+export async function seedInitialData() {
   const conn = await pool.getConnection();
   try {
     await conn.query("SET FOREIGN_KEY_CHECKS = 0");
