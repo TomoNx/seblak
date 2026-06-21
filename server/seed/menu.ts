@@ -5,6 +5,7 @@
 
 export const SEEDED_TOPPINGS = [
   // Karbo
+  { id: 't_kerupuk', name: 'Kerupuk', category: 'karbo', price: 7000, stock: 100, description: 'Kerupuk basah khas seblak' },
   { id: 't_mie', name: 'Mie', category: 'karbo', price: 7000, stock: 100, description: 'Mie instan keriting' },
   { id: 't_kwetiau', name: 'Kwetiau', category: 'karbo', price: 7000, stock: 80, description: 'Kwetiau kenyal dan lembut' },
   { id: 't_bihun', name: 'Bihun', category: 'karbo', price: 7000, stock: 80, description: 'Bihun halus' },
@@ -227,11 +228,11 @@ export const SEEDED_SETTINGS = {
 
 /** All KV config keys and their default seed values */
 export const ALL_SEED_CONFIGS = [
-  { key: 'toppings', defaultVal: SEEDED_TOPPINGS },
-  { key: 'broths', defaultVal: SEEDED_BROTHS },
-  { key: 'presets', defaultVal: SEEDED_PRESETS },
-  { key: 'snacksAndDrinks', defaultVal: SEEDED_SNACKS_AND_DRINKS },
   { key: 'toppingCategories', defaultVal: SEEDED_TOPPING_CATEGORIES },
   { key: 'menuCategories', defaultVal: SEEDED_MENU_CATEGORIES },
+  { key: 'broths', defaultVal: SEEDED_BROTHS },
+  { key: 'toppings', defaultVal: SEEDED_TOPPINGS },
+  { key: 'presets', defaultVal: SEEDED_PRESETS },
+  { key: 'snacksAndDrinks', defaultVal: SEEDED_SNACKS_AND_DRINKS },
   { key: 'settings', defaultVal: SEEDED_SETTINGS }
 ] as const;

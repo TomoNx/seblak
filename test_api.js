@@ -90,8 +90,8 @@ async function runTests() {
           quantity: 2,
           notes: "Extra pedas",
           toppings: [
-            { name: "Bakso Sapi Slice (3 pcs)", quantity: 2, price: 3000 },
-            { name: "Sosis Sapi Premium (4 pcs)", quantity: 1, price: 3000 }
+            { id: "t_bakso_sapi", name: "Bakso Sapi (3 pcs)", quantity: 2, price: 8000 },
+            { id: "t_sosis", name: "Sosis (2 pcs)", quantity: 1, price: 9000 }
           ]
         }
       ],
