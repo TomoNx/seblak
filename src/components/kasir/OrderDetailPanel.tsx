@@ -259,9 +259,24 @@ export default function OrderDetailPanel({
               )}
             </div>
           ) : (
-            <div className="bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-xl p-3 text-xs text-center">
-              <p className="font-bold mb-1">Transaksi Selesai & Lunas</p>
-              <p className="text-[10px] opacity-80">Dibayar melalui: {order.paymentMethod}</p>
+            <div className="bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-xl p-3 text-xs text-center flex flex-col gap-2.5">
+              <div>
+                <p className="font-bold mb-0.5">Transaksi Selesai & Lunas</p>
+                <p className="text-[10px] opacity-80">Dibayar melalui: {order.paymentMethod}</p>
+              </div>
+              {onDeleteOrder && (
+                <button
+                  onClick={() => {
+                    if (confirm(`Apakah Anda yakin ingin menghapus pesanan LUNAS atas nama "${order.customerName}" secara permanen?`)) {
+                      onDeleteOrder(order.id);
+                    }
+                  }}
+                  className="w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-lg shadow-sm text-[10px] uppercase flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Hapus Transaksi Lunas
+                </button>
+              )}
             </div>
           )}
         </div>
