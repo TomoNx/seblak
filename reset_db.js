@@ -26,8 +26,14 @@ async function resetDatabase() {
 
     // 2. Kirim request reset
     console.log("⏳ Mengirim permintaan reset ke backend...");
+    const args = process.argv.slice(2);
+    const pin = args[0] || '123456';
     const resetRes = await fetch(`${BASE_URL}/reset`, {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-pin': pin
+      }
     });
     
     const resetData = await resetRes.json();

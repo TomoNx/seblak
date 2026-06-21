@@ -9,5 +9,6 @@ const router = Router();
 
 router.get("/health", systemController.health);
 router.post("/reset", systemController.reset);
+router.post("/auth/verify", systemController.verifyPin);
 
 export default router;

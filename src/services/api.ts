@@ -66,9 +66,26 @@ export async function saveConfig(key: string, data: unknown): Promise<void> {
 }
 
 /** Reset the database to seeded defaults */
-export async function resetDatabase(): Promise<void> {
-  const res = await fetch(`${API_BASE}/reset`, { method: 'POST' });
+export async function resetDatabase(pin?: string): Promise<void> {
+  const headers: Record<string, string> = {};
+  if (pin) headers['x-admin-pin'] = pin;
+  const res = await fetch(`${API_BASE}/reset`, { 
+    method: 'POST',
+    headers
+  });
   if (!res.ok) throw new Error(`Failed to reset database: ${res.status}`);
+}
+
+/** Verify admin PIN on the server */
+export async function verifyAdminPin(pin: string): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/auth/verify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pin })
+  });
+  if (!res.ok) return false;
+  const data = await res.json();
+  return data.success === true;
 }
 
 /** Upload an image file by converting it to Base64 and sending it via JSON */

@@ -63,13 +63,26 @@ export async function getConfig(key: string): Promise<any | null> {
 
   if (key === "settings") {
     const [rows] = await pool.query(
-      "SELECT shop_name AS shopName, shop_address AS shopAddress, shop_phone AS shopPhone, qris_image AS qrisImage, admin_pin AS adminPin FROM shop_settings WHERE id = 'settings_default'"
+      "SELECT shop_name AS shopName, shop_address AS shopAddress, shop_phone AS shopPhone, qris_image AS qrisImage FROM shop_settings WHERE id = 'settings_default'"
     );
     const settingsRows = rows as any[];
-    return settingsRows.length > 0 ? settingsRows[0] : null;
+    if (settingsRows.length > 0) {
+      return {
+        ...settingsRows[0],
+        adminPin: "••••••"
+      };
+    }
+    return null;
   }
 
   return null;
+}
+
+export async function verifyAdminPin(pin: string): Promise<boolean> {
+  const [rows] = await pool.query("SELECT admin_pin FROM shop_settings WHERE id = 'settings_default'");
+  const settings = rows as any[];
+  const correctPin = settings.length > 0 ? settings[0].admin_pin : "123456";
+  return pin === correctPin;
 }
 
 export async function getAllConfigs(): Promise<Record<string, any>> {
@@ -152,6 +165,13 @@ export async function saveConfig(key: string, data: any): Promise<void> {
       }
     } 
     else if (key === "settings") {
+      let pinToSave = data.adminPin;
+      if (!pinToSave || pinToSave === '••••••') {
+        const [current] = await conn.query("SELECT admin_pin FROM shop_settings WHERE id = 'settings_default'");
+        const rows = current as any[];
+        pinToSave = rows.length > 0 ? rows[0].admin_pin : "123456";
+      }
+
       await conn.query(
         `INSERT INTO shop_settings (id, shop_name, shop_address, shop_phone, qris_image, admin_pin)
          VALUES ('settings_default', ?, ?, ?, ?, ?)
@@ -160,13 +180,14 @@ export async function saveConfig(key: string, data: any): Promise<void> {
            shop_address = VALUES(shop_address),
            shop_phone = VALUES(shop_phone),
            qris_image = VALUES(qris_image),
-           admin_pin = VALUES(admin_pin)`,
+           admin_pin = ?`,
         [
           data.shopName, 
           data.shopAddress || null, 
           data.shopPhone || null, 
           data.qrisImage || null, 
-          data.adminPin || "123456"
+          pinToSave,
+          pinToSave
         ]
       );
     }

@@ -124,9 +124,6 @@ function AppContent() {
     trackedOrderId ? orders.find(o => o.id === trackedOrderId) || null : null
   , [orders, trackedOrderId]);
 
-  // Default admin PIN fallback if not set in settings
-  const adminPin = settings?.adminPin || '123456';
-
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-slate-100 font-sans">
       <div className="flex-1 overflow-hidden">
@@ -147,7 +144,7 @@ function AppContent() {
           } />
 
           <Route path="/kasir" element={
-            <ProtectedRoute correctPin={adminPin}>
+            <ProtectedRoute>
               <KasirView
                 orders={orders}
                 onConfirmPayment={confirmPayment}

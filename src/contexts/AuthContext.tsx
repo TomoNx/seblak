@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import * as api from '../services/api';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (pin: string, correctPin: string) => boolean;
+  login: (pin: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -14,13 +15,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return sessionStorage.getItem('seblak_auth') === 'true';
   });
 
-  const login = (pin: string, correctPin: string) => {
-    if (pin === correctPin) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('seblak_auth', 'true');
-      return true;
+  const login = async (pin: string) => {
+    try {
+      const success = await api.verifyAdminPin(pin);
+      if (success) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('seblak_auth', 'true');
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error("Auth error:", err);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

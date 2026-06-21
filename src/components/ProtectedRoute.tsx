@@ -4,17 +4,16 @@ import { Lock, ArrowRight, ShieldAlert } from 'lucide-react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  correctPin: string;
 }
 
-export default function ProtectedRoute({ children, correctPin }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, login } = useAuth();
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = login(pin, correctPin);
+    const success = await login(pin);
     if (!success) {
       setError(true);
       setPin('');
